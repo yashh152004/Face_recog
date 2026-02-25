@@ -1,0 +1,344 @@
+[
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:11",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_f545253cd6a24bfe8e50ab458e148f4d.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:12",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_39fe9b4fb12447de8c6a73954f89455c.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:13",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_bd9d7e0670094d18aa0c86c53148a2d2.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Harini",
+        "date": "2026-02-25",
+        "time": "13:08:14",
+        "session": "Morning",
+        "status": "Present",
+        "confidence": 58.23
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:15",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_7cf1c1bca26d4f6584bd4f7bf7fe9c67.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:16",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_faea70c6c20e4097a06807d67d312d61.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:18",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_1493205a6ed54b178d2ee95c1f9bc346.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:19",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_cf916d37915745e3b53cb7bafc5a06c4.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:20",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_6cfc0ba0d1be4221b7138be3647a9e8d.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:22",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_b76d8e550251476eb283d9d1463654c5.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:23",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_dab0b514f9624a8882b9dd516376fc05.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:24",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_a631460044384add89462dd42632d634.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:25",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_de5dfc6567004f8c9f7d5d458f4d36ed.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:28",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_917925199b7d42008728ac79641a2d51.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:29",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_b55c7bd0863a41bc826e18e4ab68f590.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:30",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_29242beaf1b64aabbad96427365b0e8e.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:39",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_5bd5486b89e94d05a590ec044d2c475c.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:40",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_5079779321294d5ca50a3bb07b2a14ff.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:41",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_f570c4d5eace4030ac9ea81c2ea2be08.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Thrisha",
+        "date": "2026-02-25",
+        "time": "13:08:43",
+        "session": "Morning",
+        "status": "Present",
+        "confidence": 83.36
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:46",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_9c9f65fb55164537a8e042882ade5084.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:47",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_8e2ea6694d6b43bd9237550e19dc7513.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:48",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_cdce45e13c334874be5a95acbb43f31b.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:53",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_0c78414939334550b2051b7e395d32bd.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:08:57",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_87b5a3b9f4b0468eb04c3e2c5b6b4603.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:09:04",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_e9f4a98d119d4ebcbccf21183ac749d1.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:09:08",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_7405989f21da4c3d81fd017e6b7e867f.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:09:09",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_bceb73b447bc4ee5807be2b4880a45f2.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Trupti",
+        "date": "2026-02-25",
+        "time": "13:09:10",
+        "session": "Morning",
+        "status": "Present",
+        "confidence": 68.06
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:09:12",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_ad8f9c8c128f461bb637e80d02bbc978.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:09:13",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_21f6b2ef25a9485e869cfb3b13f5df11.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:09:15",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_b6cc53b17078400db967655494dfef29.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:09:16",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_939d4428d6b047ad85601b840574cc13.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:14:29",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_706a39fbb4614b5ea39ee4b615688c72.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:14:33",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_aeb8f673383d412b926e33004bd98987.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:14:38",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_9c98a626b41347cf88e3623466982527.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Harini",
+        "date": "2026-02-25",
+        "time": "13:14:39",
+        "session": "Morning",
+        "status": "Present",
+        "confidence": 73.42
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:14:45",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_73da8dcf80df438faff0f6d5818e0565.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Thrisha",
+        "date": "2026-02-25",
+        "time": "13:14:47",
+        "session": "Morning",
+        "status": "Present",
+        "confidence": 86.16
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:14:52",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_634cc8c14c2e48698a5f8c21fd592b45.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Trupti",
+        "date": "2026-02-25",
+        "time": "13:15:08",
+        "session": "Morning",
+        "status": "Present",
+        "confidence": 68.04
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "13:15:09",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_8ccd23758500477da87051812ed1016a.jpg"
+    }
+]

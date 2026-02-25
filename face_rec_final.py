@@ -1,157 +1,287 @@
 import cv2
 import os
 import numpy as np
+import csv
+import json
+import uuid
+from datetime import datetime
 from deepface import DeepFace
 
-# ==========================================
-# Configuration
-# ==========================================
-# List the exact names of your folders here
+# Google APIs
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+# ==================================================
+# CONFIGURATION
+# ==================================================
+
 TARGET_FOLDERS = ["Harini", "Thrisha", "Trupti"]
-
-# Model Selection: FaceNet512 is high accuracy (99.65%)
 MODEL_NAME = "Facenet512"
+THRESHOLD = 0.35            # LOWER = stricter (more accurate)
+FRAME_SKIP = 4
+SESSION = "Morning"
 
-# SENSITIVITY THRESHOLD
-# 0.5 is the balance point.
-# If it says "Error" for the real girls -> INCREASE to 0.6
-# If it confuses a stranger for the girls -> DECREASE to 0.4
-THRESHOLD = 0.5
+CSV_FILE = "attendance.csv"
+JSON_FILE = "attendance.json"
+UNKNOWN_DIR = "Unknown_log"
+CREDS_FILE = "credentials.json"
 
-# ==========================================
-# 1. Training Phase (Load & Encode)
-# ==========================================
-print("[INFO] Initializing TensorFlow/DeepFace... (Please wait)")
-# Pre-build model to avoid lag on first frame
+os.makedirs(UNKNOWN_DIR, exist_ok=True)
+
+# ==================================================
+# GOOGLE SHEETS SETUP
+# ==================================================
+
+SCOPE = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/drive"
+]
+
+CREDS = ServiceAccountCredentials.from_json_keyfile_name(
+    CREDS_FILE, SCOPE
+)
+
+client = gspread.authorize(CREDS)
+spreadsheet = client.open("Attendence")
+
+known_sheet = spreadsheet.worksheet("Attendence")
+unknown_sheet = spreadsheet.worksheet("Unknown_Faces")
+
+# ==================================================
+# INITIALIZE MODEL
+# ==================================================
+
+print("[INFO] Initializing DeepFace...")
 DeepFace.build_model(MODEL_NAME)
+
+# ==================================================
+# TRAINING PHASE
+# ==================================================
 
 known_face_encodings = []
 known_face_names = []
 
-print("[INFO] Loading images from folders...")
+print("[INFO] Loading training images...")
 
-# Loop through the specific list of names you gave me
 for name in TARGET_FOLDERS:
-    # Look for the folder in the current directory
     person_dir = os.path.join(os.getcwd(), name)
-
-    # Check if the folder actually exists
     if not os.path.exists(person_dir):
-        print(f"[WARNING] Folder '{name}' not found. Skipping.")
         continue
 
-    print(f"[INFO] Processing folder: {name}")
-
-    # Loop through images inside that folder
-    for filename in os.listdir(person_dir):
-        # Check for valid image files
-        if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
-            filepath = os.path.join(person_dir, filename)
-
+    for file in os.listdir(person_dir):
+        if file.lower().endswith((".jpg", ".jpeg", ".png")):
+            path = os.path.join(person_dir, file)
             try:
-                # Get the embedding (the "digital signature" of the face)
-                # enforce_detection=False allows it to load even if the face is slightly turned
-                embedding_objs = DeepFace.represent(img_path=filepath, model_name=MODEL_NAME, enforce_detection=False)
+                rep = DeepFace.represent(
+                    img_path=path,
+                    model_name=MODEL_NAME,
+                    enforce_detection=True
+                )
+                known_face_encodings.append(np.array(rep[0]["embedding"]))
+                known_face_names.append(name)
+                print(f"✔ Learned {name} - {file}")
+            except Exception:
+                print(f"[SKIPPED] {file}")
 
-                if embedding_objs:
-                    # Store the embedding and the label (name)
-                    known_face_encodings.append(embedding_objs[0]["embedding"])
-                    known_face_names.append(name)
-                    print(f"  -> Learned: {filename}")
-
-            except Exception as e:
-                print(f"  [Skipped] Could not process {filename}: {e}")
-
-print(f"[INFO] Training Complete. Learned {len(known_face_encodings)} faces.")
-
-if len(known_face_encodings) == 0:
-    print("[ERROR] No faces were learned. Check your folder names and image files.")
+if not known_face_encodings:
+    print("[ERROR] No training faces found.")
     exit()
 
-# ==========================================
-# 2. Real-time Detection Logic (Webcam)
-# ==========================================
-print("[INFO] Starting Webcam...")
-cap = cv2.VideoCapture(0)
+# ==================================================
+# SAFE JSON HANDLING
+# ==================================================
 
-# Load OpenCV's fast face detector
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+def load_json():
+    if not os.path.exists(JSON_FILE):
+        return []
+    try:
+        with open(JSON_FILE, "r") as f:
+            content = f.read().strip()
+            return json.loads(content) if content else []
+    except json.JSONDecodeError:
+        return []
+
+def save_json(data):
+    with open(JSON_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
+# ==================================================
+# HELPERS
+# ==================================================
+
+marked_today = set()
+unknown_embeddings = []
+
+def cosine_distance(a, b):
+    return 1 - np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+def save_unknown_image(face):
+    name = f"Unknown_{uuid.uuid4().hex}.jpg"
+    path = os.path.join(UNKNOWN_DIR, name)
+    cv2.imwrite(path, face)
+    return name
+
+def is_duplicate_unknown(embedding, threshold=0.25):
+    for e in unknown_embeddings:
+        if cosine_distance(embedding, e) < threshold:
+            return True
+    return False
+
+# ==================================================
+# LOGGING FUNCTIONS
+# ==================================================
+
+def log_known(name, confidence):
+    today = datetime.now().strftime("%Y-%m-%d")
+    key = f"{name}_{today}"
+
+    if key in marked_today:
+        return
+
+    now = datetime.now()
+
+    # CSV
+    file_exists = os.path.exists(CSV_FILE)
+    with open(CSV_FILE, "a", newline="") as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(
+                ["Name", "Date", "Time", "Session", "Status", "Confidence"]
+            )
+        writer.writerow([
+            name,
+            today,
+            now.strftime("%H:%M:%S"),
+            SESSION,
+            "Present",
+            f"{confidence:.2f}"
+        ])
+
+    # JSON
+    data = load_json()
+    data.append({
+        "type": "known",
+        "name": name,
+        "date": today,
+        "time": now.strftime("%H:%M:%S"),
+        "session": SESSION,
+        "status": "Present",
+        "confidence": round(confidence, 2)
+    })
+    save_json(data)
+
+    # Google Sheet
+    known_sheet.append_row([
+        name,
+        today,
+        now.strftime("%H:%M:%S"),
+        SESSION,
+        "Present",
+        f"{confidence:.2f}"
+    ])
+
+    marked_today.add(key)
+    print(f"[ATTENDANCE] {name} marked")
+
+def log_unknown(image_name):
+    now = datetime.now()
+
+    # JSON
+    data = load_json()
+    data.append({
+        "type": "unknown",
+        "date": now.strftime("%Y-%m-%d"),
+        "time": now.strftime("%H:%M:%S"),
+        "session": SESSION,
+        "reason": "Face not recognized",
+        "image_name": image_name
+    })
+    save_json(data)
+
+    # Google Sheet
+    unknown_sheet.append_row([
+        now.strftime("%Y-%m-%d"),
+        now.strftime("%H:%M:%S"),
+        SESSION,
+        "Face not recognized",
+        image_name
+    ])
+
+    print("[UNKNOWN] Logged once")
+
+# ==================================================
+# WEBCAM LOOP
+# ==================================================
+
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+face_cascade = cv2.CascadeClassifier(
+    cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+)
+
+print("[INFO] Press Q to quit")
+
+frame_count = 0
 
 while True:
     ret, frame = cap.read()
     if not ret:
-        print("[ERROR] Cant read from webcam.")
         break
 
-    # Convert to grayscale for detection (faster)
+    frame_count += 1
+    if frame_count % FRAME_SKIP != 0:
+        cv2.imshow("Attendance System", frame)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+        continue
+
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 6, minSize=(80, 80))
 
-    # Detect faces in the frame
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(60, 60))
-
-    # Loop through every face detected in the frame
     for (x, y, w, h) in faces:
-        # 1. Crop the face from the frame
-        face_roi = frame[y:y + h, x:x + w]
-
-        # Default settings (Assumed Unknown/Error)
-        identity = "Error"
-        best_distance = 100.0  # Start with a high number (no match)
-        color = (0, 0, 255)  # Red for Error
+        face = frame[y:y+h, x:x+w]
 
         try:
-            # 2. Get embedding for the live face
-            # We enforce_detection=False because OpenCV already found the face for us
-            results = DeepFace.represent(img_path=face_roi, model_name=MODEL_NAME, enforce_detection=False)
+            rep = DeepFace.represent(
+                img_path=face,
+                model_name=MODEL_NAME,
+                enforce_detection=True
+            )
+        except Exception:
+            continue
 
-            if results:
-                live_embedding = results[0]["embedding"]
+        live = np.array(rep[0]["embedding"])
 
-                # 3. Compare live face with ALL known faces
-                for i, known_encoding in enumerate(known_face_encodings):
+        best_dist = 1.0
+        best_name = "Unknown"
 
-                    # Calculate Cosine Distance
-                    # Distance = 0 means identical, Distance = 1 means very different
-                    a = np.array(live_embedding)
-                    b = np.array(known_encoding)
+        for i, known in enumerate(known_face_encodings):
+            dist = cosine_distance(live, known)
+            if dist < best_dist:
+                best_dist = dist
+                best_name = known_face_names[i]
 
-                    # Math: Cosine Distance = 1 - Cosine Similarity
-                    dot_product = np.dot(a, b)
-                    norm_a = np.linalg.norm(a)
-                    norm_b = np.linalg.norm(b)
+        confidence = max(0, (1 - best_dist)) * 100
 
-                    cosine_distance = 1 - (dot_product / (norm_a * norm_b))
+        if best_dist < THRESHOLD:
+            log_known(best_name, confidence)
+            label = f"{best_name}"
+            color = (0, 255, 0)
+        else:
+            if not is_duplicate_unknown(live):
+                unknown_embeddings.append(live)
+                img_name = save_unknown_image(face)
+                log_unknown(img_name)
+            label = "Unknown"
+            color = (0, 0, 255)
 
-                    # Check if this is the closest match so far
-                    if cosine_distance < best_distance:
-                        best_distance = cosine_distance
+        cv2.rectangle(frame, (x, y), (x+w, y+h), color, 2)
+        cv2.putText(frame, label, (x, y-10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
 
-                        # Only accept the name if the distance is BELOW the threshold
-                        if cosine_distance < THRESHOLD:
-                            identity = known_face_names[i]
-                            color = (0, 255, 0)  # Green for Match
-
-        except Exception as e:
-            # If DeepFace fails on a blurry frame, just ignore this frame
-            pass
-
-        # 4. Draw the box and the name
-        # Box around face
-        cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-
-        # Label background
-        cv2.rectangle(frame, (x, y - 35), (x + w, y), color, cv2.FILLED)
-
-        # Text (Name or Error)
-        font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, identity, (x + 6, y - 6), font, 0.8, (255, 255, 255), 1)
-
-    # Show the video
-    cv2.imshow('Face Recognition', frame)
-
-    # Press 'q' to quit
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imshow("Attendance System", frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
 cap.release()
 cv2.destroyAllWindows()
+print("[INFO] Program exited successfully")
