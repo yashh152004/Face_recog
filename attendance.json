@@ -340,5 +340,86 @@
         "session": "Morning",
         "reason": "Face not recognized",
         "image_name": "Unknown_8ccd23758500477da87051812ed1016a.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "17:29:20",
+        "image": "Unknown_20025d69ff5e4fc8a90b984888d953e6.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "17:29:25",
+        "image": "Unknown_2317374ec34841fab57a1fa14340a42b.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "17:29:26",
+        "image": "Unknown_1c39a8486d794dcfb05d2ae0a3a9ef21.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "17:29:28",
+        "image": "Unknown_fa4e3ab33cc94fbdb1e3322c809db370.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Yash",
+        "date": "2026-02-25",
+        "time": "17:29:29",
+        "confidence": 67.72
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "17:29:33",
+        "image": "Unknown_92ba0da176b44802a7a079cf54bfb949.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Thrisha",
+        "date": "2026-02-25",
+        "time": "17:29:38",
+        "confidence": 79.1
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "17:29:52",
+        "image": "Unknown_e1eaf2c895d54567a37a908cc8a022fb.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "17:29:56",
+        "image": "Unknown_2998e8f8b79d454f8eff579316c0bb4c.jpg"
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "19:06:29",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_01a3a5fd03c943a9a08aba99b8cafbee.jpg"
+    },
+    {
+        "type": "known",
+        "name": "Yash",
+        "date": "2026-02-25",
+        "time": "19:06:35",
+        "session": "Morning",
+        "status": "Present",
+        "confidence": 67.1
+    },
+    {
+        "type": "unknown",
+        "date": "2026-02-25",
+        "time": "19:06:36",
+        "session": "Morning",
+        "reason": "Face not recognized",
+        "image_name": "Unknown_a07ea0ea9e3b4430ac9fb2e9e65e181f.jpg"
     }
 ]
